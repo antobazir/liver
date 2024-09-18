@@ -1,6 +1,6 @@
 #define SZ1 100
 #define SZ2 15
-#define SZ3 5
+#define SZ3 15
 
     typedef struct Nutrs
     {
@@ -12,6 +12,7 @@
 		double DC_med;
 		double DC_tiss;
 		double DC_mat;
+		double DC_endo;
 		
 		/*ext conc.*/
 		double C_ext;
@@ -19,6 +20,9 @@
 		/*consommation*/
 		double *kC;
 		double cC; /*parameter for substrate Hill function*/
+
+		/*flow*/
+		double *fl;
 	
 		/* model parameters*/
 		double dx;
@@ -36,6 +40,7 @@
         double S_prol;
 		double S_maint;
 		double O_norm;
+		double T_resp;
 
         /*other variables*/
 		int N_Cell; /*all cells (dead or alive) in the model*/
@@ -43,7 +48,6 @@
 		int N_Live;
 		int reac_time; /*time for consumption changes*/
 		int avr_cell_cyc; /*cell cycle reaction*/
-		int elapsed_mins;
 		int n_pts;
 		int mean_rad_sq;
 		int ctr_x;
@@ -60,17 +64,17 @@
 		int Chg_timer;
 		float S_cons;
 		float dS_cons;
-		float O_cons;
-		float dO_cons;
 		float S_diff;
 		float dS_diff;
+		float O_cons;
+		float dO_cons;
 		float O_diff;
 		float dO_diff;
 		int x_pos;
 		int y_pos;
 		int z_pos;
 		int parent_idx;
-		int behavior;
+		int Cell_type;
 
 	}Cell;
 
@@ -81,6 +85,8 @@
 		Tissue M_Tissue;
 		Nutr S;
         Nutr O;
+		Nutr T;
+		int elapsed_mins;
 		int n_pts;
 		double kS;/*model consumptions needed to restart calculations*/
 		double kO; 
