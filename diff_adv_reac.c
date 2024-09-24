@@ -3,8 +3,7 @@
 #include <math.h>
 #include <time.h>
 #include "structdef.h"
-#include <omp.h>
-#include "lis.h"
+
 /*loop for openmp*/
 /*#pragma omp parallel for collapse(2)
     for (int i=0;i<N;i++)

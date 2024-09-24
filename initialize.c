@@ -34,6 +34,7 @@ void place_hepatocyte(int row, int col, int stck)
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].parent_idx = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Timer = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Chg_timer = 0;
+    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Cycle_dur = 1500;
 }
 
 
@@ -65,15 +66,16 @@ void place_lsec(int row, int col, int stck)
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].z_pos= stck;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].S_cons = Mod.kS;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].dS_cons = 0.0;
-    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].S_diff = Mod.S.DC_tiss;
+    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].S_diff = Mod.S.DC_endo;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].dS_diff = 0.0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].O_cons = Mod.kO;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].dO_cons = 0.0;
-    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].O_diff = Mod.O.DC_tiss;
+    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].O_diff = Mod.O.DC_endo;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].dO_diff = 0.0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].parent_idx = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Timer = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Chg_timer = 0;
+    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Cycle_dur = 1500;
 }
 
 void place_stellate(int row, int col, int stck)
@@ -104,6 +106,7 @@ void place_stellate(int row, int col, int stck)
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].parent_idx = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Timer = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Chg_timer = 0;
+    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Cycle_dur = 1500;
 }
 
 void place_Kupffer(int row, int col, int stck)
@@ -134,6 +137,7 @@ void place_Kupffer(int row, int col, int stck)
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].parent_idx = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Timer = 0;
     Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Chg_timer = 0;
+    Mod.M_Cell[Mod.M_Tissue.N_Cell-1].Cycle_dur = 1500;
 }
 
 void initialize(float kS, float kO)
@@ -148,9 +152,11 @@ void initialize(float kS, float kO)
     /*setting constants*/
     Mod.M_Tissue.N_Cell =0;
     Mod.S.DC_med = 40000.0;
+    Mod.S.DC_mat = 30000.0;
     Mod.S.DC_tiss = 7000.0;
     Mod.S.DC_endo = 3000.0;
     Mod.O.DC_med = 200000.0;
+    Mod.O.DC_mat = 180000.0;
     Mod.O.DC_tiss = 120000.0;
     Mod.O.DC_endo = 120000.0;
 
@@ -173,6 +179,19 @@ void initialize(float kS, float kO)
 	Mod.M_Tissue.LD = malloc(SZ1*SZ2*SZ3*sizeof(int));
 	Mod.M_Tissue.state_mat = malloc(SZ1*SZ2*SZ3*sizeof(unsigned char));
 	Mod.M_Cell = malloc(100000*sizeof(Mod.M_Cell));
+
+
+    for(k=0;k<SZ3;k++)
+    {
+        for(j=0;j<SZ2;j++)
+        {
+              for(i=0;i<SZ1;i++)
+            {
+                Mod.S.DCm[i + j*SZ1 + k*SZ1*SZ2] = Mod.S.DC_med;
+                Mod.O.DCm[i + j*SZ1 + k*SZ1*SZ2] = Mod.O.DC_med;
+            }  
+        }
+    }
 
     /*doing a cross section then repeating over the length*/
     for(i=0;i<SZ1;i++)

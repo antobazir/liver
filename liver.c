@@ -2,44 +2,11 @@
 #include"structdef.h"
 #include "initialize.h"
 #include "diff_adv_reac.h"
+#include "migrate.h"
 /*code that leads other codes*/
 
 Model Mod;
 FILE *f_state;
-
-void main_loop(int Nmax)
-{
-    int i;
-
-    while(Mod.elapsed_mins<Nmax)
-    {
-        /*running diffusion advection for one minute*/
-        diff_adv_reac();
-
-        for(i=0;i<Mod.M_Tissue.N_Cell;i++)
-        {
-            /*hepatocyte*/
-            if(Mod.M_Cell[i].Cell_type==1)
-            {}
-
-            /*lsec*/
-            if(Mod.M_Cell[i].Cell_type==2)
-            {}
-            
-            /*stellate cells*/
-            if(Mod.M_Cell[i].Cell_type==3)
-            {}
-
-            /*Kupffer cells*/
-            if(Mod.M_Cell[i].Cell_type==4)
-            {}
-        }
-
-        log_print();
-
-        Mod.elapsed_mins++;
-    } 
-}
 
 void log_print()
 {
@@ -92,6 +59,50 @@ void log_print()
 				fprintf(f_state,"\n");
 }
 
+
+void main_loop(int Nmax)
+{
+    int i;
+
+	log_print();
+
+    while(Mod.elapsed_mins<Nmax)
+    {
+        /*running diffusion advection for one minute*/
+        diff_adv_reac();
+
+		
+
+        for(i=0;i<Mod.M_Tissue.N_Cell;i++)
+        {
+            /*hepatocyte*/
+            if(Mod.M_Cell[i].Cell_type==1)
+            {}
+
+            /*lsec*/
+            if(Mod.M_Cell[i].Cell_type==2)
+            {}
+            
+            /*stellate cells*/
+            if(Mod.M_Cell[i].Cell_type==3)
+            {
+				migrate(i);
+			}
+
+            /*Kupffer cells*/
+            if(Mod.M_Cell[i].Cell_type==4)
+            {
+				migrate(i);
+			}
+        }
+
+        log_print();
+
+        Mod.elapsed_mins++;
+    } 
+}
+
+
 int main(int argc, char* argv[])
 {
     float kS = 1.0;
@@ -102,7 +113,7 @@ int main(int argc, char* argv[])
     /*main code*/
     initialize(kS,kO);
 
-    main_loop(1);
+    main_loop(10);
 
     fclose(f_state);
 
