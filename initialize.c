@@ -165,13 +165,13 @@ void initialize(float kS, float kO)
     Mod.S.C = malloc(SZ1*SZ2*SZ3*sizeof(double));
     Mod.S.DCm = malloc(SZ1*SZ2*SZ3*sizeof(double));
     Mod.S.kC = malloc(SZ1*SZ2*SZ3*sizeof(double));
-    Mod.S.fl = malloc(SZ1*SZ2*SZ3*sizeof(double));
+    Mod.S.fl_x = malloc(SZ1*SZ2*SZ3*sizeof(double));
     Mod.S.dx = 2.0;
 
     Mod.O.C = malloc(SZ1*SZ2*SZ3*sizeof(double));
     Mod.O.DCm = malloc(SZ1*SZ2*SZ3*sizeof(double));
     Mod.O.kC = malloc(SZ1*SZ2*SZ3*sizeof(double));
-    Mod.O.fl = malloc(SZ1*SZ2*SZ3*sizeof(double));
+    Mod.O.fl_x = malloc(SZ1*SZ2*SZ3*sizeof(double));
     Mod.O.dx = 2.0;
 
     /*Grid to follow cells*/

@@ -22,7 +22,7 @@
 		double cC; /*parameter for substrate Hill function*/
 
 		/*flow*/
-		double *fl;
+		double *fl_x;
 	
 		/* model parameters*/
 		double dx;
