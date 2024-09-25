@@ -28,3 +28,11 @@ scatter3(snap2(:,13),snap2(:,14),snap2(:,15),18,snap2(:,17),'filled')
 figure
 scatter3(snap3(:,13),snap3(:,14),snap3(:,15),18,snap3(:,17),'filled')
 
+
+figure
+scatter3(snap3(:,13),snap3(:,14),snap3(:,15),18,snap3(:,18),'filled')
+colorbar
+
+figure
+scatter3(snap3(:,13),snap3(:,14),snap3(:,15),18,snap3(:,19),'filled')
+colorbar

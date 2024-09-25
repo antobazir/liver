@@ -8,7 +8,7 @@
 Model Mod;
 FILE *f_state;
 
-void log_print()
+void snap_print()
 {
     int k;
 
@@ -20,12 +20,12 @@ void log_print()
                     Mod.M_Cell[k].Timer,
 					Mod.M_Cell[k].Cycle_dur,
 					Mod.M_Cell[k].Chg_timer,
-					Mod.M_Cell[k].S_cons,
-					Mod.M_Cell[k].dS_cons,
+					Mod.M_Cell[k].G_cons,
+					Mod.M_Cell[k].dG_cons,
 					Mod.M_Cell[k].O_cons,
 					Mod.M_Cell[k].dO_cons,
-					Mod.M_Cell[k].S_diff,
-					Mod.M_Cell[k].dS_diff,
+					Mod.M_Cell[k].G_diff,
+					Mod.M_Cell[k].dG_diff,
 					Mod.M_Cell[k].O_diff,
 					Mod.M_Cell[k].dO_diff,
 					Mod.M_Cell[k].x_pos,
@@ -37,7 +37,7 @@ void log_print()
 					if((Mod.M_Cell[k].x_pos!=-1)&&(Mod.M_Cell[k].y_pos!=-1)&&(Mod.M_Cell[k].z_pos!=-1))
 					{
 						fprintf(f_state," %1.4f %1.4f %d %d\n",
-						Mod.S.C[Mod.M_Cell[k].x_pos + Mod.M_Cell[k].y_pos*SZ1 + Mod.M_Cell[k].z_pos*SZ1*SZ2],
+						Mod.G.C[Mod.M_Cell[k].x_pos + Mod.M_Cell[k].y_pos*SZ1 + Mod.M_Cell[k].z_pos*SZ1*SZ2],
 						Mod.O.C[Mod.M_Cell[k].x_pos + Mod.M_Cell[k].y_pos*SZ1 + Mod.M_Cell[k].z_pos*SZ1*SZ2],
 						Mod.M_Tissue.Grid[Mod.M_Cell[k].x_pos + Mod.M_Cell[k].y_pos*SZ1 + Mod.M_Cell[k].z_pos*SZ1*SZ2],
 						Mod.M_Tissue.LD[Mod.M_Cell[k].x_pos + Mod.M_Cell[k].y_pos*SZ1 + Mod.M_Cell[k].z_pos*SZ1*SZ2]
@@ -64,7 +64,9 @@ void main_loop(int Nmax)
 {
     int i;
 
-	log_print();
+	snap_print();
+
+	printf("main loop...\n");
 
     while(Mod.elapsed_mins<Nmax)
     {
@@ -94,9 +96,17 @@ void main_loop(int Nmax)
             {
 				migrate(i);
 			}
+
+			/*divide(l+1);*/
+
+			/*increases cell timer*/
+			Mod.M_Cell[i].Timer = Mod.M_Cell[i].Timer+1;
         }
 
-        log_print();
+		
+
+        snap_print();
+
 
         Mod.elapsed_mins++;
     } 
@@ -105,13 +115,13 @@ void main_loop(int Nmax)
 
 int main(int argc, char* argv[])
 {
-    float kS = 1.0;
-    float kO = 1.0;
+    float kG = 0.05;
+    float kO = 0.05;
 
     f_state = fopen("liver_snap","w+");
 
     /*main code*/
-    initialize(kS,kO);
+    initialize(kG,kO);
 
     main_loop(10);
 

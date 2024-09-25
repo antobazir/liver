@@ -1,6 +1,6 @@
 #define SZ1 100
-#define SZ2 15
-#define SZ3 15
+#define SZ2 35
+#define SZ3 35
 
     typedef struct Nutrs
     {
@@ -37,10 +37,9 @@
 		int *LD;
 		unsigned char *state_mat;
 
-        double S_prol;
-		double S_maint;
+        double G_hypo;
 		double O_norm;
-		double T_resp;
+
 
         /*other variables*/
 		int N_Cell; /*all cells (dead or alive) in the model*/
@@ -62,10 +61,10 @@
 		int Timer;
 		int Cycle_dur;
 		int Chg_timer;
-		float S_cons;
-		float dS_cons;
-		float S_diff;
-		float dS_diff;
+		float G_cons;
+		float dG_cons;
+		float G_diff;
+		float dG_diff;
 		float O_cons;
 		float dO_cons;
 		float O_diff;
@@ -83,12 +82,12 @@
 	{
 		Cell *M_Cell;
 		Tissue M_Tissue;
-		Nutr S;
+		Nutr G;
         Nutr O;
 		Nutr T;
 		int elapsed_mins;
 		int n_pts;
-		double kS;/*model consumptions needed to restart calculations*/
+		double kG;/*model consumptions needed to restart calculations*/
 		double kO; 
         
 	}Model;
