@@ -14,8 +14,8 @@ extern Model Mod;
 void diff_adv_reac()
 {
   omp_set_num_threads(2);
-	int i,j,k,l,m,h,ntS;
-	ntS = (int)(60.0/Mod.O.dt);
+	int i,j,k,l,m,h,ntG,ntO;
+	ntG = (int)(60.0/Mod.O.dt);
 	int rad_sq;
 
   for (h=0; h<ntG; h++)
@@ -114,7 +114,7 @@ void diff_adv_reac()
 	}
 
   /*Oxygen solving*/
-  for (h=0; h<ntS; h++)
+  for (h=0; h<ntO; h++)
 	{
     /*openmp directive to disitribute work across cores*/
 		#pragma omp parallel for collapse(3)

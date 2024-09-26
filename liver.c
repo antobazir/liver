@@ -2,11 +2,12 @@
 #include"structdef.h"
 #include "initialize.h"
 #include "diff_adv_reac.h"
-#include "migrate.h"
+#include "behav.h"
+
 /*code that leads other codes*/
 
 Model Mod;
-FILE *f_state;
+FILE *f_state,*f_G;
 
 void snap_print()
 {
@@ -59,6 +60,21 @@ void snap_print()
 				fprintf(f_state,"\n");
 }
 
+void print_slice_grid()
+{
+
+	int i,j;
+	for(i=0;i<SZ1;i++)
+	{
+		for(j=0;j<SZ3;j++)
+		{
+			fprintf(f_G,"%3.3f ",Mod.G.C[i + SZ2/2*SZ1 + j*SZ1*SZ2]);
+		}
+		fprintf(f_G,"\n");
+	}
+	fprintf(f_G,"\n");
+}
+
 
 void main_loop(int Nmax)
 {
@@ -74,39 +90,14 @@ void main_loop(int Nmax)
         diff_adv_reac();
 
 		
+		/*the behavior function which changes the way cell behave*/
+		behav();
 
-        for(i=0;i<Mod.M_Tissue.N_Cell;i++)
-        {
-            /*hepatocyte*/
-            if(Mod.M_Cell[i].Cell_type==1)
-            {}
-
-            /*lsec*/
-            if(Mod.M_Cell[i].Cell_type==2)
-            {}
-            
-            /*stellate cells*/
-            if(Mod.M_Cell[i].Cell_type==3)
-            {
-				migrate(i);
-			}
-
-            /*Kupffer cells*/
-            if(Mod.M_Cell[i].Cell_type==4)
-            {
-				migrate(i);
-			}
-
-			/*divide(l+1);*/
-
-			/*increases cell timer*/
-			Mod.M_Cell[i].Timer = Mod.M_Cell[i].Timer+1;
-        }
-
-		
-
+		/*saves all the cells state variables in ascii*/
         snap_print();
 
+		/*save central cross section along x-z plane*/
+		print_slice_grid();
 
         Mod.elapsed_mins++;
     } 
@@ -115,10 +106,11 @@ void main_loop(int Nmax)
 
 int main(int argc, char* argv[])
 {
-    float kG = 0.05;
-    float kO = 0.05;
+    float kG = 0.01;
+    float kO = 0.01;
 
     f_state = fopen("liver_snap","w+");
+	f_G = fopen("G_snap","w+");
 
     /*main code*/
     initialize(kG,kO);

@@ -11,9 +11,9 @@ void shift(int cell_idx, int row, int col, int stck, int new_row, int new_col, i
     				/*duplication*/
 				Mod.M_Tissue.Grid[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = cell_idx+1;
 				Mod.M_Tissue.LD[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = 1;
-				Mod.S.DCm[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = Mod.S.DCm[row + col * SZ1 + stck * SZ1 * SZ2];
+				Mod.G.DCm[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = Mod.G.DCm[row + col * SZ1 + stck * SZ1 * SZ2];
 				Mod.O.DCm[new_row + new_col*SZ1 + new_stck*SZ1*SZ2]= Mod.O.DCm[row + col * SZ1 + stck * SZ1 * SZ2];
-				Mod.S.kC[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = Mod.S.kC[row + col * SZ1 + stck * SZ1 * SZ2];
+				Mod.G.kC[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = Mod.G.kC[row + col * SZ1 + stck * SZ1 * SZ2];
 				Mod.O.kC[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = Mod.O.kC[row + col * SZ1 + stck * SZ1 * SZ2];
 				Mod.M_Tissue.state_mat[new_row + new_col*SZ1 + new_stck*SZ1*SZ2] = Mod.M_Tissue.state_mat[row + col * SZ1 + stck * SZ1 * SZ2];
 				Mod.M_Cell[cell_idx].x_pos = new_row;
@@ -26,16 +26,16 @@ void shift(int cell_idx, int row, int col, int stck, int new_row, int new_col, i
 				Mod.M_Tissue.LD[row + col * SZ1 + stck * SZ1 * SZ2] = 0;
 				if(Mod.M_Cell[cell_idx].Cell_type==3)
 				{	
-					Mod.S.DCm[row + col * SZ1 + stck * SZ1 * SZ2] = Mod.S.DC_mat;
+					Mod.G.DCm[row + col * SZ1 + stck * SZ1 * SZ2] = Mod.G.DC_mat;
 					Mod.O.DCm[row + col * SZ1 + stck * SZ1 * SZ2] = Mod.O.DC_mat;
 				}
 				
 				if(Mod.M_Cell[cell_idx].Cell_type==4)
 				{	
-					Mod.S.DCm[row + col * SZ1 + stck * SZ1 * SZ2] = Mod.S.DC_med;
+					Mod.G.DCm[row + col * SZ1 + stck * SZ1 * SZ2] = Mod.G.DC_med;
 					Mod.O.DCm[row + col * SZ1 + stck * SZ1 * SZ2] = Mod.O.DC_med;
 				}
-				Mod.S.kC[row + col * SZ1 + stck * SZ1 * SZ2] = 0.0;
+				Mod.G.kC[row + col * SZ1 + stck * SZ1 * SZ2] = 0.0;
 				Mod.O.kC[row + col * SZ1 + stck * SZ1 * SZ2] = 0.0;
 				Mod.M_Tissue.state_mat[row + col * SZ1 + stck * SZ1 * SZ2] = 0;
 }
@@ -112,13 +112,13 @@ void migrate(int cell_index)
 			/*stellate cells can only mode in matrix*/
 			if(Mod.M_Cell[cell_index].Cell_type==3)
 			{
-				allowed_env = Mod.S.DC_mat;
+				allowed_env = Mod.G.DC_mat;
 			}
 		
 			/*Kupffer cells can only mode in blood/medium*/
 			if(Mod.M_Cell[cell_index].Cell_type==4)
 			{
-				allowed_env = Mod.S.DC_med;
+				allowed_env = Mod.G.DC_med;
 			}
 
 			for(l = -1; l<2 ; l++)
@@ -127,7 +127,7 @@ void migrate(int cell_index)
 				{
 					for (i = -1; i < 2; i++)
 					{
-						ngh[i + 1][j + 1][l + 1] = Mod.S.DCm[row + i + (col + j)*SZ1 + (stck + l)*SZ1*SZ2];
+						ngh[i + 1][j + 1][l + 1] = Mod.G.DCm[row + i + (col + j)*SZ1 + (stck + l)*SZ1*SZ2];
 						/*printf("current: %d \n",ngh[i+1][j+1]);*/
 						n_row[m] = row + i;
 						n_col[m] = col + j;

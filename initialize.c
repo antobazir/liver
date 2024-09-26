@@ -160,7 +160,7 @@ void initialize(float kG, float kO)
     Mod.O.DC_mat = 3000.0;
     Mod.O.DC_tiss = 2000.0;
     Mod.O.DC_endo = 2000.0;
-    Mod.G.C_ext = 3.5;
+    Mod.G.C_ext = 4.5;
     Mod.O.C_ext = 0.07;
     
     Mod.M_Tissue.reac_time = 15*60; /*source 10.1677/joe.0.1260109*/
